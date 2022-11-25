@@ -14,15 +14,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AndreuSergienko/FD-2-core.git"
+    "url": "git+https://github.com/AndreuSergienko/Online-Cinema.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/AndreuSergienko/FD-2-core/issues"
+    "url": "https://github.com/AndreuSergienko/Online-Cinema/issues"
   },
-  "homepage": "https://github.com/AndreuSergienko/FD-2-core#readme",
+  "homepage": "https://github.com/AndreuSergienko/Online-Cinema#readme",
   "devDependencies": {
     "@babel/core": "^7.18.9",
     "@babel/preset-env": "^7.18.9",
