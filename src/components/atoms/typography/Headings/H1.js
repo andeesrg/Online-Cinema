@@ -8,7 +8,9 @@ export class H1 extends Component {
 
 	render() {
 		return `
-         
+         <div>
+            <slot></slot>
+         </div>
       `;
 	}
 }

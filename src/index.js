@@ -1,3 +1,2 @@
 import './main.scss';
-// import './App';
-import './components/atoms/typography/Headings/H1';
+import './App';
