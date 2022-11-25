@@ -3,17 +3,27 @@ export class Component extends HTMLElement {
 		super();
 		this.state = {};
 		this.props = {};
+		this.isShadow = false;
 	}
 
 	//Change state
 	setState(callback) {
 		this.state = callback(this.state);
-		this.innerHTML = this.render();
+		if (this.isShadow) {
+			this.shadowRoot.innerHTML = this.render();
+		} else {
+			this.innerHTML = this.render();
+		}
 	}
 
 	//Component invoked into DOM
 	connectedCallback() {
-		this.innerHTML = this.render();
+		if (this.isShadow) {
+			this.attachShadow({ mode: 'open' });
+			this.shadowRoot.innerHTML = this.render();
+		} else {
+			this.innerHTML = this.render();
+		}
 		this.componentDidMount();
 	}
 
