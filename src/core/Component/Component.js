@@ -5,47 +5,45 @@ export class Component extends HTMLElement {
 		this.props = {};
 	}
 
+	//Change state
 	setState(callback) {
 		this.state = callback(this.state);
-		this.innerHTML = this.render()
-			.trim()
-			.replaceAll(/true|false/gi, '')
-			.replaceAll(',', '');
+		this.innerHTML = this.render();
 	}
 
+	//Component invoked into DOM
 	connectedCallback() {
-		this.innerHTML = this.render()
-			.trim()
-			.replaceAll(/true|false/gi, '')
-			.replaceAll(',', '');
+		this.innerHTML = this.render();
 		this.componentDidMount();
-		this.registerEvents();
 	}
 
+	//Component removed from DOM and page
 	disconnectedCallback() {
 		this.componentWillUnmount();
 	}
 
+	//Component attributes changed
 	attributeChangedCallback(name, oldValue, newValue) {
 		this.componentWillUpdate(name, oldValue, newValue);
-		this.getAttributeNames.forEach(() => {
-			this.props[name] = this.getAttribute(name);
-		});
+		this.props[name] = this.getAttribute(name);
 	}
 
+	//Dispatch event
 	dispatch(type, props) {
 		this.dispatchEvent(
 			new CustomEvent(type, { detail: props, bubbles: true })
 		);
 	}
 
+	//Component changed
 	componentWillUpdate() {}
 
+	//Component rendered
 	render() {}
 
+	//Component removed from DOM and page
 	componentWillUnmount() {}
 
-	registerEvents() {}
-
+	//Component invoked into DOM
 	componentDidMount() {}
 }
