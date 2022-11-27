@@ -46,14 +46,14 @@ export class Component extends HTMLElement {
 	}
 
 	//Component changed
-	componentWillUpdate() {}
+	componentWillUpdate() { }
 
 	//Component rendered
-	render() {}
+	render() { }
 
 	//Component removed from DOM and page
-	componentWillUnmount() {}
+	componentWillUnmount() { }
 
 	//Component invoked into DOM
-	componentDidMount() {}
+	componentDidMount() { }
 }
