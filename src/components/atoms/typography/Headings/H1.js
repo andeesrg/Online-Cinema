@@ -9,7 +9,7 @@ export class H1 extends Component {
 	render() {
 		return `
          <div>
-				 		<h1>Hello from H1.js</h1>
+				<slot name="header">Hello from H1.js</slot>
             <slot></slot>
          </div>
       `;
