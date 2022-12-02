@@ -15,14 +15,14 @@ export class App extends core.Component {
 
   getMovies() {
     movieService.getAllMovies()
-    .then(({ data }) => {
-      this.setState((state) => {
-        return {
-          ...state,
-          movies: data
-        }
+      .then(({ data }) => {
+        this.setState((state) => {
+          return {
+            ...state,
+            movies: data
+          }
+        })
       })
-    })
   }
 
   componentDidMount() {
@@ -33,7 +33,7 @@ export class App extends core.Component {
     return (
       `
       <div id="shell">
-        <it-header></it-header>
+            <it-header></it-header>
             <main id="main">
               <it-router>
                 <it-route path="/" component="home-page" title="Home Page"></it-route>
@@ -43,7 +43,7 @@ export class App extends core.Component {
                 <it-outlet></it-outlet>
               </it-router>
             <main>
-          <it-footer></it-footer>
+            <it-footer></it-footer>
       </div>
       `
     )
