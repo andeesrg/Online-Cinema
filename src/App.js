@@ -32,25 +32,19 @@ export class App extends core.Component {
   render() {
     return (
       `
-        <div id="shell">
-          <it-router>
-            <nav>
-              <ul>
-                <li>
-                  <it-link to="/">Home</it-link>
-                <li>
-                <li>
-                  <it-link to="/admin">Admin</it-link>
-                <li>
-              </ul>
-            </nav>
-            <it-route path="/" component="home-page" title="Home Page"></it-route>
-            <it-route path="/admin" component="admin-page" title="Admin Page"></it-route>
-            <it-route path="/movies/:id" component="movie-page" title="Movie Detail Page"></it-route>
-            <it-route path="*" component="error-page" title="Not Found Page"></it-route>
-            <it-outlet></it-outlet>
-          </it-router>
-        </div>
+      <div id="shell">
+        <it-header></it-header>
+            <main id="main">
+              <it-router>
+                <it-route path="/" component="home-page" title="Home Page"></it-route>
+                <it-route path="/admin" component="admin-page" title="Admin Page"></it-route>
+                <it-route path="/movies/:id" component="movie-page" title="Movie Detail Page"></it-route>
+                <it-route path="*" component="error-page" title="Not Found Page"></it-route>
+                <it-outlet></it-outlet>
+              </it-router>
+            <main>
+          <it-footer></it-footer>
+      </div>
       `
     )
   }

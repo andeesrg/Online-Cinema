@@ -1,0 +1,43 @@
+.movie {
+	width:152px;
+	float:left;
+	padding-right:12px;
+}
+.movie-image {
+	float:left;
+	width:152px;
+	height:214px;
+	position:relative;
+}
+.movie-image img {
+	width:152px;
+	height:214px;
+}
+.movie-image a {
+	float:left;
+	display:inline;
+	width:152px;
+	height:214px;
+	position:relative;
+	z-index:2;
+}
+.play {
+	position:absolute;
+	top:0;
+	left:0;
+	width:152px;
+	height:214px;
+	background:url('../../../assets/images/image-hover.png');
+	display:block;
+	z-index:5;
+	cursor:pointer;
+	display:none;
+}
+.movie span.name {
+	font-weight:bold;
+	color:#fff;
+	font-size:14px;
+	text-align:center;
+	padding-top:160px;
+	display:block;
+}
