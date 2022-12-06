@@ -1,21 +1,34 @@
-import { Component } from "../../../core";
+import { appRoutes } from "../../../constants/appRoutes";
+import * as core from  "../../../core";
 import './header.scss'
 
-export class Header extends Component {
-
-
+export class Header extends core.Component {
     render () {
         return `
         <div id="header">
             <h1 id="logo"><a href="#">MovieHunter</a></h1>
             <div id="navigation">
                 <ul>
-                    <li><a class="active" href="#">HOME</a></li>
-                    <li><a href="#">NEWS</a></li>
-                    <li><a href="#">IN THEATERS</a></li>
-                    <li><a href="#">COMING SOON</a></li>
-                    <li><a href="#">CONTACT</a></li>
-                    <li><a href="#">ADVERTISE</a></li>
+                    <li>
+                        <it-link to="${appRoutes.home}">
+                            <span class="active link">Home</span>
+                        </it-link>
+                    </li>
+                    <li>
+                        <it-link to="${appRoutes.admin}">
+                            <span class="link">Admin</span>
+                        </it-link>
+                    </li>
+                    <li>
+                        <it-link to="${appRoutes.signIn}">
+                            <span class="link">sign In</span>
+                        </it-link>
+                    </li>
+                    <li>
+                        <it-link to="${appRoutes.signUp}">
+                            <span class="link">sign Up</span>
+                        </it-link>
+                    </li>
                 </ul>
             </div>
 

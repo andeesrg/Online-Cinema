@@ -36,11 +36,12 @@ h1#logo a {
 	padding-left:29px;
 }
 
-#navigation ul li a {
+.link {
 	font-size:14px;
 	font-weight:bold;
 	color:#fff;
 	text-decoration:none;
+	text-transform: uppercase;
 }
 
 #navigation ul li a.active, #navigation ul li a:hover {

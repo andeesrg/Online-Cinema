@@ -18,7 +18,7 @@ export class Router extends HTMLElement {
 
     navigate(url) {
         const matchedRoute = matchRoute(this.routes, url);
-        if (matchedRoute) {
+        if(matchedRoute) {
             window.history.pushState(null, null, url);
             this.renderPage(matchedRoute)
         }
@@ -26,16 +26,16 @@ export class Router extends HTMLElement {
 
     renderPage(activeRoute) {
         const { component, title, params = {} } = activeRoute;
-        if (component) {
-            while (this.outlet.firstChild) {
+        if(component) {
+            while(this.outlet.firstChild) {
                 this.outlet.removeChild(this.outlet.firstChild)
             }
 
             const updateView = () => {
                 const view = document.createElement(component);
                 document.title = title || document.title;
-                for (let key in params) {
-                    if (key !== '*') {
+                for(let key in params) {
+                    if(key !== '*') {
                         view.setAttribute(key, params[key]);
                     }
                 }
@@ -52,6 +52,7 @@ export class Router extends HTMLElement {
     }
 
     onChangeRoute = (evt) => {
+        console.log(evt.detail.target)
         this.navigate(evt.detail.target)
     }
 
