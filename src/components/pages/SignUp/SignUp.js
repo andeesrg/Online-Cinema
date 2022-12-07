@@ -32,9 +32,6 @@ export class SignUpPage extends Component {
   registerUser = (data) => {
     this.toggleisLoading();
     authService.signUp(data.email, data.password)
-      .then((user) => {
-        console.log(user)
-      })
       .catch((error) => {
         this.setState((state) => {
           return {

@@ -20,8 +20,8 @@ export class Input extends Component {
     const isAddClassName = JSON.parse(this.props['is-touched']) ? controlClassName : '';
     return `
         <div class="row mb-3">
-            <label class="col-sm-2 col-form-label">${this.props.label}</label>
-            <div class="col-sm-10">
+          <label class="col-sm-2 col-form-label">${this.props.label}</label>
+          <div class="col-sm-10">
             <input 
                 type="${this.props.type}"
                 class="form-control ${isAddClassName} ${this.props['class-name'] ?? ''}"
@@ -29,7 +29,7 @@ export class Input extends Component {
                 value="${this.props.value}"
             />
             <div class="invalid-feedback">${this.props['error-message']}</div>
-            </div>
+          </div>
         </div>
         `;
   }
