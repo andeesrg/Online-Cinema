@@ -1,84 +1,92 @@
-import { Component } from '../../../core';
-import '../../molecules';
-import '../../atoms';
-import { initialFieldsState } from './initialState';
-import { FormManager } from '../../../core/FormManager/FormManager';
-import { Validator } from '../../../core/FormManager/Validator';
-import { authService } from '../../../services/Auth';
+import { Component } from "../../../core";
+import "../../molecules";
+import "../../atoms";
+import { initialFieldsState } from "./initialState";
+import { FormManager } from "../../../core/FormManager/FormManager";
+import { Validator } from "../../../core/FormManager/Validator";
+import { authService } from "../../../services/Auth";
 
 export class SignUpPage extends Component {
-	constructor() {
-		super();
-		this.state = {
-			error: '',
-			isLoading: false,
-			fields: {
-				...initialFieldsState,
-			},
-		};
+  constructor() {
+    super();
+    this.state = {
+      error: "",
+      isLoading: false,
+      fields: {
+        ...initialFieldsState,
+      },
+    };
 
-		this.form = new FormManager();
-	}
+    this.form = new FormManager();
+  }
 
-	registerUser = (data) => {
-		this.toggleIsLoading();
-		authService
-			.signUp(data.email, data.password)
-			.then((user) => {
-				console.log(user);
-			})
-			.catch((err) => {
-				this.setState((state) => ({
-					...state,
-					error: err.message,
-				}));
-			})
-			.finally(() => {
-				this.toggleIsLoading();
-			});
-	};
+  toggleisLoading = () => {
+    this.setState((state) => {
+      return {
+        ...state,
+        isLoading: !state.isLoading
+      }
+    })
+  }
 
-	validateForm = (evt) => {
-		if (evt.target.closest('it-input')) {
-			this.form.init(this.querySelector('.registration-form'), {
-				email: [
-					Validator.email('Email is not valid'),
-					Validator.required('The field should not be empty'),
-				],
-				password: [Validator.required('The field should not be empty')],
-			});
-		}
-	};
+  registerUser = (data) => {
+    this.toggleisLoading();
+    authService.signUp(data.email, data.password)
+    .then((user) => {
+      console.log(user)
+    })
+    .catch((error) => {
+      this.setState((state) => {
+        return {
+          ...state,
+          error: error.message
+        }
+      })
+    })
+    .finally(() => {
+      this.toggleisLoading()
+    })
+  };
 
-	validate = (evt) => {
-		this.setState((state) => {
-			return {
-				...state,
-				fields: {
-					...state.fields,
-					...evt.detail,
-				},
-			};
-		});
-	};
+  validateForm = (evt) => {
+    if (evt.target.closest("it-input")) {
+      this.form.init(this.querySelector(".registration-form"), {
+        email: [
+          Validator.email('Email is not valid'),
+          Validator.required('The field should not be empty')
+        ],
+        password: [Validator.required('The field should not be empty')],
+      });
+    }
+  };
 
-	componentDidMount() {
-		this.addEventListener('click', this.validateForm);
-		this.addEventListener('validate-controls', this.validate);
-		this.addEventListener(
-			'submit',
-			this.form.handleSubmit(this.registerUser)
-		);
-	}
+  validate = (evt) => {
+    this.setState((state) => {
+      return {
+        ...state,
+        fields: {
+          ...state.fields,
+          ...evt.detail,
+        },
+      };
+    });
+  };
 
-	render() {
-		const {
-			fields: { email, password },
-		} = this.state;
+  componentDidMount() {
+    this.addEventListener("click", this.validateForm);
+    this.addEventListener('validate-controls', this.validate);
+    this.addEventListener("submit", this.form.handleSubmit(this.registerUser));
+  }
 
-		return `
+  render() {
+    const {
+      fields: { email, password },
+    } = this.state;
+
+    return `
       <it-preloader is-loading="${this.state.isLoading}">
         <form class="mt-5 registration-form">
+          <div class="invalid-feedback text-center mb-3 d-block">${this.state.error}</div>
           <it-input
             type="email"
             label="Email"
@@ -104,7 +112,7 @@ export class SignUpPage extends Component {
       </it-preloader>
     
     `;
-	}
+  }
 }
 
-customElements.define('sign-up-page', SignUpPage);
+customElements.define("sign-up-page", SignUpPage);
