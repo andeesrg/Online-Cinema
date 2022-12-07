@@ -32,20 +32,20 @@ export class SignUpPage extends Component {
   registerUser = (data) => {
     this.toggleisLoading();
     authService.signUp(data.email, data.password)
-    .then((user) => {
-      console.log(user)
-    })
-    .catch((error) => {
-      this.setState((state) => {
-        return {
-          ...state,
-          error: error.message
-        }
+      .then((user) => {
+        console.log(user)
       })
-    })
-    .finally(() => {
-      this.toggleisLoading()
-    })
+      .catch((error) => {
+        this.setState((state) => {
+          return {
+            ...state,
+            error: error.message
+          }
+        })
+      })
+      .finally(() => {
+        this.toggleisLoading()
+      })
   };
 
   validateForm = (evt) => {
@@ -55,7 +55,9 @@ export class SignUpPage extends Component {
           Validator.email('Email is not valid'),
           Validator.required('The field should not be empty')
         ],
-        password: [Validator.required('The field should not be empty')],
+        password: [
+          Validator.required('The field should not be empty')
+        ],
       });
     }
   };
@@ -79,14 +81,14 @@ export class SignUpPage extends Component {
   }
 
   render() {
-    const {
-      fields: { email, password },
-    } = this.state;
+    const { fields: { email, password } } = this.state;
 
     return `
       <it-preloader is-loading="${this.state.isLoading}">
         <form class="mt-5 registration-form">
-          <div class="invalid-feedback text-center mb-3 d-block">${this.state.error}</div>
+          <div class="invalid-feedback text-center mb-3 d-block">
+            ${this.state.error}
+          </div>
           <it-input
             type="email"
             label="Email"
@@ -95,7 +97,8 @@ export class SignUpPage extends Component {
             is-valid="${email.isValid}"
             is-touched="${email.isTouched}"
             error-message="${email.errors?.message}"
-          ></it-input>
+          >
+          </it-input>
 
           <it-input
             type="password" 
@@ -106,7 +109,8 @@ export class SignUpPage extends Component {
             is-valid="${password.isValid}"
             is-touched="${password.isTouched}"
             error-message="${password.errors?.message}"
-          ></it-input>
+          >
+          </it-input>
           <button type="submit" class="btn btn-primary">Sign in</button>
         </form>
       </it-preloader>

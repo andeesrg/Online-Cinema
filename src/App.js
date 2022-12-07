@@ -10,7 +10,7 @@ export class App extends core.Component {
       `
       <div id="shell">
         <it-router>
-          <it-header></it-header>
+              <it-header></it-header>
               <main id="main">
                 <it-route path="${appRoutes.home}" component="home-page" title="Home Page"></it-route>
                 <it-route path="${appRoutes.admin}" component="admin-page" title="Admin Page"></it-route>

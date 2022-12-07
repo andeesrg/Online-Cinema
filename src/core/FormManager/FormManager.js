@@ -50,7 +50,7 @@ export class FormManager {
     const validationFields = Object.keys(scheme);
 
     validationFields.forEach((key) => {
-        ref.querySelector(`input[name="${key}"]`).addEventListener('blur', this.validate(key));
-      });
+      ref.querySelector(`input[name="${key}"]`).addEventListener('blur', this.validate(key));
+    });
   }
 }
