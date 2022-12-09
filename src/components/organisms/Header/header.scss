@@ -43,13 +43,6 @@ h1#logo a {
 	text-transform: uppercase;
 }
 
-.sign-out-link {
-	display: none;
-	&.show {
-		display: block;
-	}
-}
-
 #navigation ul li a.active,
 #navigation ul li a:hover {
 	color: #d91d2a;

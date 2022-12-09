@@ -10,7 +10,7 @@ export class App extends core.Component {
 		this.state = {
 			error: '',
 			isLoading: false,
-			isLogin: false,
+			isLogged: false,
 		};
 	}
 
@@ -23,15 +23,21 @@ export class App extends core.Component {
 		});
 	}
 
-	onSignOut = () => {
-		authService.signOut().then(() => {
-			this.setState((state) => {
-				return {
-					...state,
-					isLogin: false,
-				};
-			});
-		});
+	onSignOut() {
+		this.toggleIsLoading()
+		authService
+			.signOut()
+			.then(() => {
+				this.setState((state) => {
+					return {
+						...state,
+						isLogged: false,
+					};
+				});
+			})
+			.finally(() => {
+				this.toggleIsLoading()
+			})
 	}
 
 	getUser() {
@@ -42,7 +48,7 @@ export class App extends core.Component {
 				this.setState((state) => {
 					return {
 						...state,
-						isLogin: true,
+						isLogged: Boolean(user),
 					};
 				});
 			})
@@ -59,10 +65,16 @@ export class App extends core.Component {
 			});
 	}
 
+	onUserCreate() {
+		this.toggleIsLoading()
+		this.getUser()
+	}
+
 	componentDidMount() {
 		this.toggleIsLoading();
 		this.getUser();
 		this.addEventListener('sign-out', this.onSignOut);
+		this.addEventListener('user-created', this.onUserCreate)
 	}
 
 	render() {
@@ -75,7 +87,7 @@ export class App extends core.Component {
 				: `
 		<div id="shell">
          <it-router>
-				<it-header is-login="${this.state.isLogin}"></it-header>
+				<it-header is-logged="${this.state.isLogged}"></it-header>
 				<main id="main">
 				<it-route path="${appRoutes.home}" component="home-page" title="Home Page"></it-route>
 				<it-route path="${appRoutes.admin}" component="admin-page" title="Admin Page"></it-route>

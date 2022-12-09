@@ -39,6 +39,10 @@ export class AuthService {
 		return createUserWithEmailAndPassword(this.auth, email, password);
 	}
 
+	signIn(email, password) {
+		return signInWithEmailAndPassword(this.auth, email, password)
+	}
+
 	signOut() {
 		return signOut(this.auth);
 	}

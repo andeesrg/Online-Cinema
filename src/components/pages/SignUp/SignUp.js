@@ -30,7 +30,7 @@ export class SignUpPage extends Component {
 		});
 	};
 
-	registerUser = (data) => {
+	createUser = (data) => {
 		this.toggleisLoading();
 		authService
 			.signUp(data.email, data.password)
@@ -53,7 +53,7 @@ export class SignUpPage extends Component {
 
 	validateForm = (evt) => {
 		if (evt.target.closest('it-input')) {
-			this.form.init(this.querySelector('.registration-form'), {
+			this.form.init(this.querySelector('.sign-up-form'), {
 				email: [
 					Validator.email('Email is not valid'),
 					Validator.required('The field should not be empty'),
@@ -78,7 +78,7 @@ export class SignUpPage extends Component {
 	componentDidMount() {
 		this.addEventListener('click', this.validateForm);
 		this.addEventListener('validate-controls', this.validate);
-		this.addEventListener('submit', this.form.handleSubmit(this.registerUser));
+		this.addEventListener('submit', this.form.handleSubmit(this.createUser));
 	}
 
 	render() {
@@ -88,7 +88,7 @@ export class SignUpPage extends Component {
 
 		return `
       <it-preloader is-loading="${this.state.isLoading}">
-        <form class="mt-5 registration-form">
+        <form class="mt-5 sign-up-form">
           <div class="invalid-feedback text-center mb-3 d-block">
             ${this.state.error}
           </div>
@@ -114,7 +114,7 @@ export class SignUpPage extends Component {
             error-message="${password.errors?.message}"
           >
           </it-input>
-          <button type="submit" class="btn btn-primary">Sign in</button>
+          <button type="submit" class="btn btn-primary">Sign up</button>
         </form>
       </it-preloader>
     

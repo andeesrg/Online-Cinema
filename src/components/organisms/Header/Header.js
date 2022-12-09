@@ -9,7 +9,7 @@ export class Header extends core.Component {
     }
 
     static get observedAttributes() {
-        return ['is-login'];
+        return ['is-logged'];
     }
 
     onClick(evt) {
@@ -53,7 +53,7 @@ export class Header extends core.Component {
                             <span class="link">sign Up</span>
                         </it-link>
                     </li>
-                    ${JSON.parse(this.props['is-login']) ? `
+                    ${JSON.parse(this.props['is-logged']) ? `
                         <li>
                             <a href="#" class="sign-out-link">
                                 <span class="link">sign out</span>
