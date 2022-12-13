@@ -1,17 +1,17 @@
-import { Component } from '../../../core';
-import '../../molecules';
-import '../../atoms';
-import { initialFieldsState } from './initialState';
-import { FormManager } from '../../../core/FormManager/FormManager';
-import { Validator } from '../../../core/FormManager/Validator';
-import { authService } from '../../../services/Auth';
-import { appRoutes } from '../../../constants/appRoutes';
+import { Component } from "../../../core";
+import "../../molecules";
+import "../../atoms";
+import { initialFieldsState } from "./initialState";
+import { FormManager } from "../../../core/FormManager/FormManager";
+import { Validator } from "../../../core/FormManager/Validator";
+import { authService } from "../../../services/Auth";
+import { appRoutes } from "../../../constants/appRoutes";
 
 export class SignInPage extends Component {
   constructor() {
     super();
     this.state = {
-      error: '',
+      error: "",
       isLoading: false,
       fields: {
         ...initialFieldsState,
@@ -30,13 +30,13 @@ export class SignInPage extends Component {
     });
   };
 
-  enterUser = (data) => {
+  signIn = (data) => {
     this.toggleisLoading();
     authService
       .signIn(data.email, data.password)
       .then((user) => {
         authService.user = user;
-        this.dispatch('change-route', { target: appRoutes.home });
+        this.dispatch("change-route", { target: appRoutes.home });
       })
       .catch((error) => {
         this.setState((state) => {
@@ -52,13 +52,13 @@ export class SignInPage extends Component {
   };
 
   validateForm = (evt) => {
-    if (evt.target.closest('it-input')) {
-      this.form.init(this.querySelector('.sign-in-form'), {
+    if (evt.target.closest("it-input")) {
+      this.form.init(this.querySelector(".registration-form"), {
         email: [
-          Validator.email('Email is not valid'),
-          Validator.required('The field should not be empty'),
+          Validator.email("Email is not valid"),
+          Validator.required("The field should not be empty"),
         ],
-        password: [Validator.required('The field should not be empty')],
+        password: [Validator.required("The field should not be empty")],
       });
     }
   };
@@ -76,9 +76,9 @@ export class SignInPage extends Component {
   };
 
   componentDidMount() {
-    this.addEventListener('click', this.validateForm);
-    this.addEventListener('validate-controls', this.validate);
-    this.addEventListener('submit', this.form.handleSubmit(this.enterUser));
+    this.addEventListener("click", this.validateForm);
+    this.addEventListener("validate-controls", this.validate);
+    this.addEventListener("submit", this.form.handleSubmit(this.signIn));
   }
 
   render() {
@@ -88,10 +88,9 @@ export class SignInPage extends Component {
 
     return `
       <it-preloader is-loading="${this.state.isLoading}">
-        <form class="mt-5 sign-in-form">
-          <div class="invalid-feedback text-center mb-3 d-block">
-            ${this.state.error}
-          </div>
+        <h1>Sign In</h1>
+        <form class="mt-5 registration-form">
+          <div class="invalid-feedback text-center mb-3 d-block">${this.state.error}</div>
           <it-input
             type="email"
             label="Email"
@@ -100,8 +99,7 @@ export class SignInPage extends Component {
             is-valid="${email.isValid}"
             is-touched="${email.isTouched}"
             error-message="${email.errors?.message}"
-          >
-          </it-input>
+          ></it-input>
 
           <it-input
             type="password" 
@@ -112,14 +110,12 @@ export class SignInPage extends Component {
             is-valid="${password.isValid}"
             is-touched="${password.isTouched}"
             error-message="${password.errors?.message}"
-          >
-          </it-input>
+          ></it-input>
           <button type="submit" class="btn btn-primary">Sign in</button>
         </form>
       </it-preloader>
-    
     `;
   }
 }
 
-customElements.define('sign-in-page', SignInPage);
+customElements.define("sign-in-page", SignInPage);

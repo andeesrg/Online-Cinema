@@ -1,31 +1,55 @@
-import { Component } from '../../../core';
-import { authService } from '../../../services/Auth';
-import { appRoutes } from '../../../constants/appRoutes';
+import { Component } from "../../../core";
+import { authService } from "../../../services/Auth";
+import { appRoutes } from "../../../constants/appRoutes";
+import { FormManager } from "../../../core/FormManager/FormManager";
+import { storageService } from "../../../services/Storage";
 
 export class AdminPage extends Component {
-	constructor() {
-		super();
-		this.state = {
-			isLoading: false,
-		};
-	}
+  constructor() {
+    super();
+    this.state = {
+      isLoading: false,
+    };
+    this.form = new FormManager();
+  }
 
-	componentDidMount() {
-		if (!authService.user) {
-			this.dispatch('change-route', {
-				target: appRoutes[this.props.path ?? 'signUp'],
-			});
-		}
-	}
+  toggleIsLoading() {
+    this.setState((state) => {
+      return {
+        ...state,
+        isLoading: !state.isLoading,
+      };
+    });
+  }
 
-	render() {
-		return `
+  createMovie = (data) => {
+    toggleIsLoading();
+    storageService.uploadPoster(data.poster)
+      .then((snapshot) => {
+        storageService.getDownloadURL(snapshot.ref).then((url) => {
+          console.log(url)
+        })
+      })
+  }
+
+  componentDidMount() {
+    this.form.init(this.querySelector('.send-data'), {})
+    this.addEventListener('submit', this.form.handleSubmit(this.createMovie))
+    if (!authService.user) {
+      this.dispatch("change-route", {
+        target: appRoutes[this.props.path ?? "signUp"],
+      });
+    }
+  }
+
+  render() {
+    return `
     <it-preloader is-loading="${this.state.isLoading}">
     <div class="container mt-5">
       <h1>AdminPage</h1>
       <div class="row">
         <div class="col-12">
-          <form>
+          <form class="send-data">
             <div class="mb-3">
               <label class="form-label">Type movie name</label>
               <input class="form-control" type="text" name="title">
@@ -60,7 +84,7 @@ export class AdminPage extends Component {
     </it-preloader>
     
     `;
-	}
+  }
 }
 
-customElements.define('admin-page', AdminPage);
+customElements.define("admin-page", AdminPage);

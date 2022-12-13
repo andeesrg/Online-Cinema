@@ -30,6 +30,6 @@ export class Link extends Component {
             </a>
         `;
     }
-}
+} 
 
 customElements.define('it-link', Link)

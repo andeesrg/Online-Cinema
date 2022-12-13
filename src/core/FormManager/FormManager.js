@@ -18,9 +18,7 @@ export class FormManager {
   };
 
   dispatch(target, data) {
-    target.dispatchEvent(
-      new CustomEvent('validate-controls', { bubbles: true, detail: data })
-    );
+    target.dispatchEvent(new CustomEvent('validate-controls', { bubbles: true, detail: data }));
   }
 
   validate = (key) => {
@@ -52,7 +50,7 @@ export class FormManager {
     const validationFields = Object.keys(scheme);
 
     validationFields.forEach((key) => {
-      ref.querySelector(`input[name="${key}"]`).addEventListener('blur', this.validate(key));
-    });
+        ref.querySelector(`input[name="${key}"]`).addEventListener('blur', this.validate(key));
+      });
   }
 }
