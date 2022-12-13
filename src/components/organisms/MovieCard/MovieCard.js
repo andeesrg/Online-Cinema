@@ -3,7 +3,7 @@ import "./movieCard.scss";
 
 export class MovieCard extends Component {
   static get observedAttributes() {
-    return ["title", "poster", "comments", "id", "rating"];
+    return ["title", "poster", "comments", "rating"];
   }
 
   render() {
