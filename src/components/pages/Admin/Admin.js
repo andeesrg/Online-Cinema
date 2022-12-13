@@ -3,6 +3,7 @@ import { authService } from "../../../services/Auth";
 import { appRoutes } from "../../../constants/appRoutes";
 import { FormManager } from "../../../core/FormManager/FormManager";
 import { storageService } from "../../../services/Storage";
+import { movieService } from "../../../services/MovieService";
 
 export class AdminPage extends Component {
   constructor() {
@@ -23,14 +24,24 @@ export class AdminPage extends Component {
   }
 
   createMovie = (data) => {
-    toggleIsLoading();
+    this.toggleIsLoading();
     storageService.uploadPoster(data.poster)
       .then((snapshot) => {
-        storageService.getDownloadURL(snapshot.ref).then((url) => {
-          console.log(url)
-        })
+        storageService.getDownloadURL(snapshot.ref)
+          .then((url) => {
+            if (data.poster.size) {
+              movieService.create({
+                ...data,
+                poster: url,
+              })
+            }
+          })
+      }).finally(() => {
+        this.toggleIsLoading()
       })
   }
+
+
 
   componentDidMount() {
     this.form.init(this.querySelector('.send-data'), {})

@@ -1,8 +1,16 @@
-import { MOVIES } from '../MOCK/movies'
+import { Database } from './Database';
 
 class MovieService {
-    getAllMovies() {
-        return Promise.resolve({ data: MOVIES })
+    constructor() {
+        this.database = new Database()
+    }
+
+    getMovies() {
+        return this.database.read('movies')
+    }
+
+    create(body) {
+        return this.database.create('movies', body)
     }
 }
 
