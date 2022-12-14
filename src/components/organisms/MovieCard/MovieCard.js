@@ -1,25 +1,30 @@
 import { Component } from "../../../core";
 import "./movieCard.scss";
+import '../../../core/Router/Link'
+import { appRoutes } from "../../../constants/appRoutes";
 
 export class MovieCard extends Component {
   static get observedAttributes() {
-    return ["title", "poster", "comments", "rating"];
+    return ["title", "poster", "comments", "rating", "description", "id"];
   }
 
   render() {
     return `
         <div class="movie">
-            <div class="movie-image">
-            <span class="play"><span class="name">${this.props.title}</span></span>
-            <a href="#"><img src="../../assets/images/${this.props.poster}" alt="" /></a>
+          <div class="movie-image">
+            <span class="play">
+              <span class="name">${this.props.title}</span>
+            </span>
+            <it-link to="${appRoutes.movies}/${this.props.id}">
+              <img src="${this.props.poster}" alt="${this.props.title}" />
+            </it-link>
             </div>
             <div class="rating">
             <p>RATING</p>
             <div class="stars">
                 <div class="stars-in"></div>
             </div>
-            <span class="comments">${JSON.parse(this.props.comments)?.length ?? 0}</span>
-            </div>
+          </div>
         </div>
         `;
   }

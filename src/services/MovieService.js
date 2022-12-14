@@ -12,6 +12,10 @@ class MovieService {
     create(body) {
         return this.database.create('movies', body)
     }
+
+    getMovie(id) {
+        return this.database.readDoc('movies', id)
+    }
 }
 
 export const movieService = new MovieService();

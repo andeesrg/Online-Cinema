@@ -110,7 +110,7 @@ export class SignUpPage extends Component {
             is-touched="${password.isTouched}"
             error-message="${password.errors?.message}"
           ></it-input>
-          <button type="submit" class="btn btn-primary">Sign in</button>
+          <button type="submit" class="btn btn-primary">Sign up</button>
         </form>
       </it-preloader>
     

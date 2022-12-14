@@ -3,6 +3,7 @@ import {
 	collection,
 	doc,
 	addDoc,
+	getDoc,
 	updateDoc,
 	deleteDoc,
 	getDocs
@@ -31,6 +32,12 @@ export class Database {
 				};
 			});
 		});
+	}
+
+	readDoc(collectionKey, id) {
+		const documentRef = doc(this._database, collectionKey, id);
+
+		return getDoc(documentRef).then((doc) => doc.data());
 	}
 
 	update(collectionKey, id, body) {
