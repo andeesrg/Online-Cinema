@@ -34,13 +34,15 @@ export class HomePage extends Component {
         this.setState((state) => {
           return {
             ...state,
-            movies: data.reduce((acc, curr) => {
-              acc[curr.genre] = acc[curr.genre]?.length ? [...acc[curr.genre], curr] : [curr];
+            movies: data.reduce((acc) => {
+              Object.keys(this.state.movies).forEach((key) => {
+                acc[key] = data.filter((movie) => movie.genre === key)
+              })
               return acc
-            })
+            }, {})
           };
         });
-      }).then(() => console.log(this.state))
+      })
       .finally(() => {
         this.toggleIsLoading();
       });
@@ -55,36 +57,25 @@ export class HomePage extends Component {
       <it-preloader is-loading="${this.state.isLoading}">
         <div id="content">
         ${Object.keys(this.state.movies).map((key) => (`
-        <div class="box">
+          <div class="box">
             <div class="head">
               <h2>${key}</h2>
-              <p class="text-right"><a href="#">See all</a></p>
             </div>
-              <div class="home-container ">
-                ${this.state.movies.length > 0
-        ? `
-                  ${this.state.movies[key]
-          .map(
-            ({ title, poster, description, id, rating, genre }) => {
-              return `
-                          <movie-card
-                          title="${title}"
-                          poster="${poster}"
-                          description="${description}"
-                          rating="${rating}"
-                          genre="${genre}"
-                          id="${id}"
-                        ></movie-card>
-                      `;
-            }
-          )
-          .join(" ")}
-           `
-        : `<h2>Movies is not available</h2>`
-      }
-         </div>
-          </div>
-        `))}          
+            <div class="home-container ">
+            ${this.state.movies[key]
+            .map(({ title, poster, description, rating, genre, id }) => (`
+              <movie-card
+                title="${title}"
+                poster="${poster}"
+                description="${description}"
+                rating="${rating}"
+                genre="${genre}"
+                id="${id}"
+              >
+              </movie-card>
+            `)).join('')} 
+            </div> 
+           `)).join('')}
         </div>
       </it-preloader>
     `;
