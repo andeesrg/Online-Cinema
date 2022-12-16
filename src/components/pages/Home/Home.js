@@ -34,15 +34,13 @@ export class HomePage extends Component {
         this.setState((state) => {
           return {
             ...state,
-            movies: data.reduce((acc) => {
-              Object.keys(this.state.movies).forEach((key) => {
-                acc[key] = data.filter((movie) => movie.genre === key)
-              })
+            movies: data.reduce((acc, curr) => {
+              acc[curr.genre] = acc[curr.genre]?.length ? [...acc[curr.genre], curr] : [curr]
               return acc
             }, {})
           };
         });
-      })
+      }).then(() => console.log(this.state))
       .finally(() => {
         this.toggleIsLoading();
       });
@@ -63,7 +61,7 @@ export class HomePage extends Component {
             </div>
             <div class="home-container ">
             ${this.state.movies[key]
-            .map(({ title, poster, description, rating, genre, id }) => (`
+        .map(({ title, poster, description, rating, genre, id }) => (`
               <movie-card
                 title="${title}"
                 poster="${poster}"
