@@ -1,4 +1,4 @@
-import { Component } from "../../../core";
+import { Component, eventBus } from "../../../core";
 import "../../molecules";
 import "../../atoms";
 import { initialFieldsState } from "./initialState";
@@ -6,6 +6,7 @@ import { FormManager } from "../../../core/FormManager/FormManager";
 import { Validator } from "../../../core/FormManager/Validator";
 import { authService } from "../../../services/Auth";
 import { appRoutes } from "../../../constants/appRoutes";
+import { appEvents } from "../../../constants/appEvents";
 
 export class SignInPage extends Component {
   constructor() {
@@ -21,7 +22,7 @@ export class SignInPage extends Component {
     this.form = new FormManager();
   }
 
-  toggleisLoading = () => {
+  toggleIsLoading = () => {
     this.setState((state) => {
       return {
         ...state,
@@ -31,13 +32,13 @@ export class SignInPage extends Component {
   };
 
   signIn = (data) => {
-    this.toggleisLoading();
+    this.toggleIsLoading();
     authService
       .signIn(data.email, data.password)
       .then((user) => {
         authService.user = user;
-        this.dispatch("change-route", { target: appRoutes.home });
-        this.dispatch('user-is-log')
+        eventBus.emit(appEvents.changeRoute, { target: appRoutes.home });
+        eventBus.emit(appEvents.userAuthorized);
       })
       .catch((error) => {
         this.setState((state) => {
@@ -48,7 +49,7 @@ export class SignInPage extends Component {
         });
       })
       .finally(() => {
-        this.toggleisLoading();
+        this.toggleIsLoading();
       });
   };
 
@@ -77,8 +78,8 @@ export class SignInPage extends Component {
   };
 
   componentDidMount() {
+    eventBus.on(appEvents.validateControls, this.validate);
     this.addEventListener("click", this.validateForm);
-    this.addEventListener("validate-controls", this.validate);
     this.addEventListener("submit", this.form.handleSubmit(this.signIn));
   }
 
@@ -89,7 +90,9 @@ export class SignInPage extends Component {
 
     return `
       <it-preloader is-loading="${this.state.isLoading}">
-        <h1>Sign In</h1>
+        <div class="mt-3">
+          <h1>Sign In</h1>
+        </div>
         <form class="mt-5 registration-form">
           <div class="invalid-feedback text-center mb-3 d-block">${this.state.error}</div>
           <it-input

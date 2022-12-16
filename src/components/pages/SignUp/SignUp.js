@@ -1,4 +1,4 @@
-import { Component } from "../../../core";
+import { Component, eventBus } from "../../../core";
 import "../../molecules";
 import "../../atoms";
 import { initialFieldsState } from "./initialState";
@@ -6,6 +6,7 @@ import { FormManager } from "../../../core/FormManager/FormManager";
 import { Validator } from "../../../core/FormManager/Validator";
 import { authService } from "../../../services/Auth";
 import { appRoutes } from "../../../constants/appRoutes";
+import { appEvents } from "../../../constants/appEvents";
 
 export class SignUpPage extends Component {
   constructor() {
@@ -21,7 +22,7 @@ export class SignUpPage extends Component {
     this.form = new FormManager();
   }
 
-  toggleisLoading = () => {
+  toggleIsLoading = () => {
     this.setState((state) => {
       return {
         ...state,
@@ -31,12 +32,13 @@ export class SignUpPage extends Component {
   };
 
   registerUser = (data) => {
-    this.toggleisLoading();
+    this.toggleIsLoading();
     authService
       .signUp(data.email, data.password)
       .then((user) => {
         authService.user = user;
-        this.dispatch("change-route", { target: appRoutes.home });
+        eventBus.emit(appEvents.changeRoute, { target: appRoutes.home });
+        eventBus.emit(appEvents.userAuthorized);
       })
       .catch((error) => {
         this.setState((state) => {
@@ -47,7 +49,7 @@ export class SignUpPage extends Component {
         });
       })
       .finally(() => {
-        this.toggleisLoading();
+        this.toggleIsLoading();
       });
   };
 
@@ -77,8 +79,8 @@ export class SignUpPage extends Component {
 
   componentDidMount() {
     this.addEventListener("click", this.validateForm);
-    this.addEventListener("validate-controls", this.validate);
     this.addEventListener("submit", this.form.handleSubmit(this.registerUser));
+    eventBus.on(appEvents.validateControls, this.validate);
   }
 
   render() {
@@ -88,6 +90,9 @@ export class SignUpPage extends Component {
 
     return `
       <it-preloader is-loading="${this.state.isLoading}">
+        <div class="mt-3">
+          <h1>Sign Up</h1>
+        </div>
         <form class="mt-5 registration-form">
           <div class="invalid-feedback text-center mb-3 d-block">${this.state.error}</div>
           <it-input
@@ -110,7 +115,7 @@ export class SignUpPage extends Component {
             is-touched="${password.isTouched}"
             error-message="${password.errors?.message}"
           ></it-input>
-          <button type="submit" class="btn btn-primary">Sign up</button>
+          <button type="submit" class="btn btn-primary">Sign in</button>
         </form>
       </it-preloader>
     

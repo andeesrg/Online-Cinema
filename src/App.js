@@ -2,6 +2,9 @@ import * as core from "./core";
 import "./components";
 import { appRoutes } from "./constants/appRoutes";
 import { authService } from "./services/Auth";
+import { eventBus } from "./core";
+import { appEvents } from "./constants/appEvents";
+import "./auth/PrivateRoute";
 
 export class App extends core.Component {
   constructor() {
@@ -73,23 +76,24 @@ export class App extends core.Component {
       });
   };
 
-  setIsLogged() {
+  setIsAuthorized = () => {
     this.setState((state) => {
       return {
         ...state,
-        isLogged: true
-      }
-    })
-  }
+        isLogged: true,
+      };
+    });
+  };
 
   componentDidMount() {
     this.getUser();
-    this.addEventListener("user-is-logout", this.onSignOut);
-    this.addEventListener('user-is-log', this.setIsLog)
+    eventBus.on(appEvents.userAuthorized, this.setIsAuthorized);
+    eventBus.on(appEvents.userLoggedOut, this.onSignOut);
   }
 
   componentWillUnmount() {
-    this.removeEventListener("sign-out", this.onSignOut);
+    eventBus.off(appEvents.userAuthorized, this.setIsAuthorized);
+    eventBus.off(appEvents.userLoggedOut, this.onSignOut);
   }
 
   render() {
@@ -99,13 +103,13 @@ export class App extends core.Component {
       <div id="shell">
         <it-router>
             <it-header is-logged="${this.state.isLogged}"></it-header>
+            <sub-navigation></sub-navigation>
               <main id="main">
                 <it-route path="${appRoutes.home}" component="home-page" title="Home Page"></it-route>
-                <it-route path="${appRoutes.admin}" component="admin-page" title="Admin Page"></it-route>
+                <private-route path="${appRoutes.admin}" component="admin-page" title="Admin Page"></private-route>
                 <it-route path="${appRoutes.signIn}" component="sign-in-page" title="SignIn Page"></it-route>
                 <it-route path="${appRoutes.signUp}" component="sign-up-page" title="SignUp Page"></it-route>
-                <it-route path="${appRoutes.movies}/:id" component="movie-details-page" title="Movie Details Page">
-                </it-route>
+                <it-route path="${appRoutes.movies}/:id" component="movie-details-page" title="Movie Details Page"></it-route>
                 <it-route path="${appRoutes.errorPage}" component="error-page" title="Not Found Page"></it-route>
                 <it-outlet></it-outlet>
               </main>
@@ -117,18 +121,3 @@ export class App extends core.Component {
 }
 
 customElements.define("my-app", App);
-
-{
-  /* <it-header></it-header>
-${this.state.movies.map(({ id, title, poster, rating, comments }) => {
-  return `
-    <movie-card 
-      id="${id}"
-      title="${title}"
-      poster="${poster}"
-      rating="${rating}"
-      comments='${JSON.stringify(comments)}'
-    ></movie-card>
-  `
-}).join(' ')} */
-}

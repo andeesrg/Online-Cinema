@@ -1,3 +1,6 @@
+import { appEvents } from "../../constants/appEvents";
+import { eventBus } from "../EventBus";
+
 export class FormManager {
   constructor() {
     this.ref = null;
@@ -17,10 +20,6 @@ export class FormManager {
     };
   };
 
-  dispatch(target, data) {
-    target.dispatchEvent(new CustomEvent('validate-controls', { bubbles: true, detail: data }));
-  }
-
   validate = (key) => {
     return (evt) => {
       const value = evt.target.value;
@@ -33,7 +32,7 @@ export class FormManager {
           return acc;
         }, {});
 
-      this.dispatch(evt.target, {
+      eventBus.emit(appEvents.validateControls, {
         [key]: {
           value,
           errors: results,
@@ -50,7 +49,9 @@ export class FormManager {
     const validationFields = Object.keys(scheme);
 
     validationFields.forEach((key) => {
-        ref.querySelector(`input[name="${key}"]`).addEventListener('blur', this.validate(key));
-      });
+      ref
+        .querySelector(`input[name="${key}"]`)
+        .addEventListener("blur", this.validate(key));
+    });
   }
 }

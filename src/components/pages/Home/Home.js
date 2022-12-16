@@ -1,72 +1,94 @@
 import { Component } from "../../../core";
-import { movieService } from "../../../services/MovieService";
-import '../../organisms/MovieCard'
-import '../../atoms/Preloader'
+import { databaseService } from "../../../services/Database";
+import "../../organisms";
+import "./home.scss";
 
 export class HomePage extends Component {
   constructor() {
     super();
     this.state = {
       isLoading: false,
-      movies: []
-    }
+      movies: {
+        action: [],
+        horror: [],
+        drama: [],
+        fantasy: [],
+      },
+    };
   }
 
-  toggleIsLoading = () => {
+  toggleIsLoading() {
     this.setState((state) => {
       return {
         ...state,
         isLoading: !state.isLoading,
       };
     });
-  };
+  }
 
   getMovies() {
-    this.toggleIsLoading()
-    movieService.getMovies()
+    this.toggleIsLoading();
+    databaseService
+      .read("movies")
       .then((data) => {
         this.setState((state) => {
           return {
             ...state,
-            movies: data
-          }
-        })
-      })
+            movies: data.reduce((acc, curr) => {
+              acc[curr.genre] = acc[curr.genre]?.length ? [...acc[curr.genre], curr] : [curr];
+              return acc
+            })
+          };
+        });
+      }).then(() => console.log(this.state))
       .finally(() => {
-        this.toggleIsLoading()
-      })
+        this.toggleIsLoading();
+      });
   }
 
-
   componentDidMount() {
-    this.getMovies()
+    this.getMovies();
   }
 
   render() {
     return `
-    <it-preloader is-loading="${this.state.isLoading}">
-      <div id="content">
+      <it-preloader is-loading="${this.state.isLoading}">
+        <div id="content">
+        ${Object.keys(this.state.movies).map((key) => (`
         <div class="box">
-        ${this.state.movies.length ?
-        this.state.movies.map(({ title, genre, poster, rating, description, id }) => (`
-              <movie-card
-                title="${title}"
-                poster="${poster}"
-                rating="${rating}"
-                genre="${genre}"
-                id="${id}"
-                description="${description}"
-              >
-              </movie-card>
-            `)).join('')
-        : '<h1>No movies found</h1>'
+            <div class="head">
+              <h2>${key}</h2>
+              <p class="text-right"><a href="#">See all</a></p>
+            </div>
+              <div class="home-container ">
+                ${this.state.movies.length > 0
+        ? `
+                  ${this.state.movies[key]
+          .map(
+            ({ title, poster, description, id, rating, genre }) => {
+              return `
+                          <movie-card
+                          title="${title}"
+                          poster="${poster}"
+                          description="${description}"
+                          rating="${rating}"
+                          genre="${genre}"
+                          id="${id}"
+                        ></movie-card>
+                      `;
+            }
+          )
+          .join(" ")}
+           `
+        : `<h2>Movies is not available</h2>`
       }
-            <div class="cl">&nbsp;</div>
+         </div>
+          </div>
+        `))}          
         </div>
-      </div>
-    </it-preloader>
+      </it-preloader>
     `;
   }
 }
 
-customElements.define('home-page', HomePage)
+customElements.define("home-page", HomePage);

@@ -1,62 +1,46 @@
-import {
-	getFirestore,
-	collection,
-	doc,
-	addDoc,
-	getDoc,
-	updateDoc,
-	deleteDoc,
-	getDocs
-} from 'firebase/firestore';
 import { cloudService } from './Cloud';
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  getDocs,
+  doc,
+  updateDoc,
+  deleteDoc,
+  getDoc,
+} from 'firebase/firestore';
 
-export class Database {
-	constructor() {
-		this._database = getFirestore(cloudService.app);
-	}
+class DatabaseService {
+  constructor() {
+    this._database = getFirestore(cloudService.app);
+  }
 
-	create(collectionKey, body) {
-		const collectionRef = collection(this._database, collectionKey);
+  create(collectionKey, body) {
+    const collectionRef = collection(this._database, collectionKey);
+    return addDoc(collectionRef, body);
+  }
 
-		return addDoc(collectionRef, body);
-	}
+  read(collectionKey) {
+    const collectionRef = collection(this._database, collectionKey);
+    return getDocs(collectionRef).then((documents) => {
+      return documents.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+    });
+  }
 
-	read(collectionKey) {
-		const collectionRef = collection(this._database, collectionKey);
+  getDocument(collectionKey, id) {
+    const documentRef = doc(this._database, collectionKey, id);
+    return getDoc(documentRef).then((data) => data.data())
+  }
 
-		return getDocs(collectionRef).then((documents) => {
-			return documents.docs.map((doc) => {
-				return {
-					...doc.data(),
-					id: doc.id,
-				};
-			});
-		});
-	}
+  update(collectionKey, id, body) {
+    const document = doc(this._database, collectionKey, id);
+    return updateDoc(document, body);
+  }
 
-	readDoc(collectionKey, id) {
-		const documentRef = doc(this._database, collectionKey, id);
-
-		return getDoc(documentRef).then((doc) => doc.data());
-	}
-
-	update(collectionKey, id, body) {
-		const documentRef = doc(this._database, collectionKey, id);
-
-		return updateDoc(documentRef, body);
-	}
-
-	delete(collectionKey, id) {
-		const documentRef = doc(this._database, collectionKey, id);
-
-		return deleteDoc(documentRef);
-	}
-
-	static getInstance() {
-		if (!Database.instance) {
-			Database.instance = new Database();
-		}
-
-		return Database.instance;
-	}
+  delete(collectionKey, id) {
+    const document = doc(this._database, collectionKey, id);
+    return deleteDoc(document);
+  }
 }
+
+export const databaseService = new DatabaseService();

@@ -9,8 +9,7 @@ export class CloudService {
       storageBucket: "online-cinema-6373b.appspot.com",
       messagingSenderId: "162715506861",
       appId: process.env.APP_ID
-    };
-
+    }
     this.app = initializeApp(this.config);
   }
 }
