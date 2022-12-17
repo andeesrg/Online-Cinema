@@ -61,7 +61,7 @@ export class HomePage extends Component {
             </div>
             <div class="home-container ">
             ${this.state.movies[key]
-        .map(({ title, poster, description, rating, genre, id }) => (`
+            .map(({ title, poster, description, rating, genre, id }) => (`
               <movie-card
                 title="${title}"
                 poster="${poster}"
@@ -70,10 +70,8 @@ export class HomePage extends Component {
                 genre="${genre}"
                 id="${id}"
               >
-              </movie-card>
-            `)).join('')} 
-            </div> 
-           `)).join('')}
+              </movie-card>`)).join('')} 
+            </div>`)).join('')}
         </div>
       </it-preloader>
     `;
