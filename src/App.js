@@ -23,7 +23,7 @@ export class App extends core.Component {
         isLoading: !state.isLoading,
       };
     });
-  }
+  };
 
   getUser() {
     this.toggleIsLoading();
