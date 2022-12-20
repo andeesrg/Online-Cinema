@@ -10,7 +10,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config webpack.build.config.js",
-    "start": "webpack serve --open --config webpack.dev.config.js"
+    "start": "webpack serve --open --config webpack.dev.config.js",
+    "firebase:login": "firebase login",
+    "firebase:init": "firebase init",
+    "firebase:deploy": "firebase deploy"
   },
   "repository": {
     "type": "git",
@@ -32,6 +35,7 @@
     "css-loader": "^6.7.1",
     "cssnano": "^5.1.12",
     "dart-sass": "^1.25.0",
+    "firebase-tools": "^11.19.0",
     "html-webpack-plugin": "^5.5.0",
     "mini-css-extract-plugin": "^2.6.1",
     "postcss": "^8.4.14",
